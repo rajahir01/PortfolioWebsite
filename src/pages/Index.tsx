@@ -13,7 +13,7 @@ const Index = () => {
       <Navbar />
       <HeroSection />
       <FocusSection />
-      <TechOrbit />
+      <TechSphere3D />
       <SkillsSection />
       <ExperienceSection />
       <ProjectsSection />
