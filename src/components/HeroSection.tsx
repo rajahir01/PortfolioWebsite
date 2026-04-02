@@ -1,6 +1,7 @@
 import { motion, useMotionValue, useTransform, animate } from "framer-motion";
 import { ArrowDown, Github, Linkedin, Mail } from "lucide-react";
 import { useEffect, useState, useMemo } from "react";
+import HeroScene from "./HeroScene";
 
 const roles = [
   "SLM Specialist",
@@ -155,7 +156,7 @@ const NeuralNetworkBg = () => {
 const HeroSection = () => {
   return (
     <section className="relative min-h-screen flex items-center justify-center bg-grid overflow-hidden">
-      <NeuralNetworkBg />
+      <HeroScene />
       <FloatingParticles />
 
       {/* Ambient glows */}
