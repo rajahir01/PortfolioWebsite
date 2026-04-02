@@ -156,7 +156,7 @@ const NeuralNetworkBg = () => {
 const HeroSection = () => {
   return (
     <section className="relative min-h-screen flex items-center justify-center bg-grid overflow-hidden">
-      <NeuralNetworkBg />
+      <HeroScene />
       <FloatingParticles />
 
       {/* Ambient glows */}
