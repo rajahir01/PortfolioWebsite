@@ -1,6 +1,7 @@
 import { motion, useMotionValue, useTransform, animate } from "framer-motion";
 import { ArrowDown, Github, Linkedin, Mail } from "lucide-react";
 import { useEffect, useState, useMemo } from "react";
+import HeroScene from "./HeroScene";
 
 const roles = [
   "SLM Specialist",
