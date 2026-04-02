@@ -31,8 +31,9 @@ const projects = [
 
 const ProjectsSection = () => {
   return (
-    <section id="projects" className="py-24 relative">
-      <div className="container px-6">
+    <section id="projects" className="py-24 relative overflow-hidden">
+      <ProjectsScene />
+      <div className="container px-6 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
