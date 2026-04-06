@@ -24,7 +24,7 @@ const SphereNode = ({ position, label }: { position: [number, number, number]; l
       <group position={position}>
         <mesh ref={meshRef}>
           <sphereGeometry args={[0.08, 16, 16]} />
-          <meshBasicMaterial color="#33e6d9" transparent opacity={0.7} />
+          <meshBasicMaterial color="#4B8BF5" transparent opacity={0.7} />
         </mesh>
         <Text
           position={[0, -0.2, 0]}
@@ -72,7 +72,7 @@ const Connections = ({ points }: { points: [number, number, number][] }) => {
       <bufferGeometry>
         <bufferAttribute attach="attributes-position" args={[positions, 3]} count={positions.length / 3} />
       </bufferGeometry>
-      <lineBasicMaterial color="#33e6d9" transparent opacity={0.06} />
+      <lineBasicMaterial color="#4B8BF5" transparent opacity={0.06} />
     </lineSegments>
   );
 };
@@ -105,11 +105,11 @@ const RotatingGroup = () => {
       {/* Center glow */}
       <mesh>
         <sphereGeometry args={[0.2, 32, 32]} />
-        <meshBasicMaterial color="#33e6d9" transparent opacity={0.3} />
+        <meshBasicMaterial color="#4B8BF5" transparent opacity={0.3} />
       </mesh>
       <mesh>
         <sphereGeometry args={[0.5, 32, 32]} />
-        <meshBasicMaterial color="#33e6d9" transparent opacity={0.05} />
+        <meshBasicMaterial color="#4B8BF5" transparent opacity={0.05} />
       </mesh>
 
       <Connections points={points} />
