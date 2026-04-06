@@ -76,7 +76,7 @@ const DataFlowRings = () => {
       {[1.2, 2, 2.8].map((radius, i) => (
         <mesh key={i} rotation={[Math.PI / 2 + i * 0.3, 0, i * 0.5]}>
           <torusGeometry args={[radius, 0.005, 8, 100]} />
-          <meshBasicMaterial color="#33e6d9" transparent opacity={0.15 - i * 0.03} />
+          <meshBasicMaterial color="#4B8BF5" transparent opacity={0.15 - i * 0.03} />
         </mesh>
       ))}
     </group>
