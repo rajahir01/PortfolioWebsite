@@ -96,11 +96,60 @@ const TokenStream = () => (
   </div>
 );
 
+const AgentTree = () => (
+  <svg width="48" height="48" viewBox="0 0 48 48" fill="none" className="opacity-60">
+    <circle cx="24" cy="8" r="3" className="fill-primary" />
+    <circle cx="12" cy="28" r="3" className="fill-primary" />
+    <circle cx="36" cy="28" r="3" className="fill-primary" />
+    <circle cx="6" cy="42" r="2.5" className="fill-primary/60" />
+    <circle cx="18" cy="42" r="2.5" className="fill-primary/60" />
+    <circle cx="30" cy="42" r="2.5" className="fill-primary/60" />
+    <circle cx="42" cy="42" r="2.5" className="fill-primary/60" />
+    <line x1="24" y1="11" x2="12" y2="25" stroke="hsl(var(--primary))" strokeWidth="1" strokeOpacity="0.4" />
+    <line x1="24" y1="11" x2="36" y2="25" stroke="hsl(var(--primary))" strokeWidth="1" strokeOpacity="0.4" />
+    <line x1="12" y1="31" x2="6" y2="39.5" stroke="hsl(var(--primary))" strokeWidth="1" strokeOpacity="0.4" />
+    <line x1="12" y1="31" x2="18" y2="39.5" stroke="hsl(var(--primary))" strokeWidth="1" strokeOpacity="0.4" />
+    <line x1="36" y1="31" x2="30" y2="39.5" stroke="hsl(var(--primary))" strokeWidth="1" strokeOpacity="0.4" />
+    <line x1="36" y1="31" x2="42" y2="39.5" stroke="hsl(var(--primary))" strokeWidth="1" strokeOpacity="0.4" />
+  </svg>
+);
+
+const GPUBars = () => (
+  <div className="flex items-end gap-[3px] h-8">
+    {[90, 75, 95, 60, 85, 70, 100, 55].map((pct, i) => (
+      <motion.div
+        key={i}
+        className="w-[4px] rounded-sm bg-primary"
+        initial={{ height: 0 }}
+        animate={{ height: `${pct}%`, opacity: [0.4, 0.9, 0.4] }}
+        transition={{ duration: 1.5, delay: i * 0.1, repeat: Infinity, ease: "easeInOut" }}
+        style={{ maxHeight: "100%" }}
+      />
+    ))}
+  </div>
+);
+
+const InfraGrid = () => (
+  <div className="grid grid-cols-4 gap-[3px]">
+    {Array.from({ length: 12 }, (_, i) => (
+      <motion.div
+        key={i}
+        className="w-2 h-2 rounded-[2px] bg-primary"
+        animate={{ opacity: [0.15, 0.8, 0.15] }}
+        transition={{ duration: 2, delay: i * 0.18, repeat: Infinity }}
+      />
+    ))}
+  </div>
+);
+
 const getVisual = (type: string) => {
   switch (type) {
     case "VOICE": return <WaveformVisual />;
     case "SLM": return <TokenStream />;
     case "CONV": return <NeuralPulse />;
+    case "AGENT": return <AgentTree />;
+    case "GPU": return <GPUBars />;
+    case "INFRA": return <InfraGrid />;
     default: return <NeuralPulse />;
   }
 };

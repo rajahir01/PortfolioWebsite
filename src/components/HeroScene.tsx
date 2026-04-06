@@ -1,11 +1,65 @@
-import { useRef, useMemo } from "react";
+import { useRef, useMemo, useEffect, useState } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 
 const NODE_COUNT = 80;
 const CONNECTION_DISTANCE = 2.5;
 
-const NeuralNetwork = () => {
+const usePrimaryColor = () => {
+  const [color, setColor] = useState("#2563EB");
+  useEffect(() => {
+    const update = () => {
+      const raw = getComputedStyle(document.documentElement).getPropertyValue("--primary").trim();
+      if (raw) setColor(`hsl(${raw})`);
+    };
+    update();
+    const observer = new MutationObserver(update);
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
+    return () => observer.disconnect();
+  }, []);
+  return color;
+};
+
+const PulseRing = ({ primaryColor }: { primaryColor: string }) => {
+  const meshRef = useRef<THREE.Mesh>(null!);
+  const stateRef = useRef({ active: false, progress: 0, x: 0, y: 0, z: 0, nextAt: 3 });
+
+  useFrame(({ clock }) => {
+    const time = clock.getElapsedTime();
+    const s = stateRef.current;
+
+    if (!s.active && time > s.nextAt) {
+      s.active = true;
+      s.progress = 0;
+      s.x = (Math.random() - 0.5) * 6;
+      s.y = (Math.random() - 0.5) * 6;
+      s.z = (Math.random() - 0.5) * 4;
+    }
+
+    if (s.active && meshRef.current) {
+      s.progress += 0.018;
+      const scale = s.progress * 6;
+      const opacity = Math.max(0, 0.5 - s.progress * 0.5);
+      meshRef.current.scale.setScalar(scale);
+      meshRef.current.position.set(s.x, s.y, s.z);
+      (meshRef.current.material as THREE.MeshBasicMaterial).opacity = opacity;
+
+      if (s.progress >= 1) {
+        s.active = false;
+        s.nextAt = time + 2.5 + Math.random() * 2;
+      }
+    }
+  });
+
+  return (
+    <mesh ref={meshRef}>
+      <ringGeometry args={[0.4, 0.44, 48]} />
+      <meshBasicMaterial color={primaryColor} transparent opacity={0} side={THREE.DoubleSide} />
+    </mesh>
+  );
+};
+
+const NeuralNetwork = ({ primaryColor }: { primaryColor: string }) => {
   const pointsRef = useRef<THREE.Points>(null!);
   const linesRef = useRef<THREE.LineSegments>(null!);
 
@@ -64,8 +118,8 @@ const NeuralNetwork = () => {
           linePositions[lineIdx * 6 + 4] = positions[j * 3 + 1];
           linePositions[lineIdx * 6 + 5] = positions[j * 3 + 2];
 
-          // Cyan tint
-          const r = 0.2, g = 0.9, b = 0.85;
+          // Blue accent tint (#2563EB)
+          const r = 0.15, g = 0.39, b = 0.92;
           lineColors[lineIdx * 6] = r;
           lineColors[lineIdx * 6 + 1] = g;
           lineColors[lineIdx * 6 + 2] = b * alpha;
@@ -87,6 +141,7 @@ const NeuralNetwork = () => {
 
   return (
     <>
+      <PulseRing primaryColor={primaryColor} />
       <points ref={pointsRef}>
         <bufferGeometry>
           <bufferAttribute
@@ -95,7 +150,7 @@ const NeuralNetwork = () => {
             count={NODE_COUNT}
           />
         </bufferGeometry>
-        <pointsMaterial size={0.06} color="#33e6d9" transparent opacity={0.8} sizeAttenuation />
+        <pointsMaterial size={0.06} color={primaryColor} transparent opacity={0.8} sizeAttenuation />
       </points>
 
       <lineSegments ref={linesRef}>
@@ -118,6 +173,7 @@ const NeuralNetwork = () => {
 };
 
 const HeroScene = () => {
+  const primaryColor = usePrimaryColor();
   return (
     <div className="absolute inset-0 pointer-events-none">
       <Canvas
@@ -126,7 +182,7 @@ const HeroScene = () => {
         gl={{ antialias: true, alpha: true }}
         style={{ background: "transparent" }}
       >
-        <NeuralNetwork />
+        <NeuralNetwork primaryColor={primaryColor} />
       </Canvas>
     </div>
   );

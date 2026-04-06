@@ -4,7 +4,7 @@ import { useEffect, useState, useMemo } from "react";
 import HeroScene from "./HeroScene";
 
 const roles = [
-  "SLM Specialist",
+  "AI Agent Orchestrator",
   "Conversational AI Engineer",
   "Voice Agent Architect",
   "RAG Systems Builder",

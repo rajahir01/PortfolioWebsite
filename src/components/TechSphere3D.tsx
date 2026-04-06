@@ -1,7 +1,22 @@
-import { useRef, useMemo } from "react";
+import { useRef, useMemo, useEffect, useState } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { Text, Float } from "@react-three/drei";
+import { Text, Float, OrbitControls } from "@react-three/drei";
 import * as THREE from "three";
+
+const usePrimaryColor = () => {
+  const [color, setColor] = useState("#2563EB");
+  useEffect(() => {
+    const update = () => {
+      const raw = getComputedStyle(document.documentElement).getPropertyValue("--primary").trim();
+      if (raw) setColor(`hsl(${raw})`);
+    };
+    update();
+    const observer = new MutationObserver(update);
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
+    return () => observer.disconnect();
+  }, []);
+  return color;
+};
 
 const techLabels = [
   "LLaMA", "Mistral", "BERT", "RAG", "PyTorch", "LangChain",
@@ -10,7 +25,7 @@ const techLabels = [
   "ComfyUI", "LoRA", "Eleven Labs", "Vapi",
 ];
 
-const SphereNode = ({ position, label }: { position: [number, number, number]; label: string }) => {
+const SphereNode = ({ position, label, color }: { position: [number, number, number]; label: string; color: string }) => {
   const meshRef = useRef<THREE.Mesh>(null!);
 
   useFrame(({ clock }) => {
@@ -24,16 +39,14 @@ const SphereNode = ({ position, label }: { position: [number, number, number]; l
       <group position={position}>
         <mesh ref={meshRef}>
           <sphereGeometry args={[0.08, 16, 16]} />
-          <meshBasicMaterial color="#33e6d9" transparent opacity={0.7} />
+          <meshBasicMaterial color={color} transparent opacity={0.7} />
         </mesh>
         <Text
           position={[0, -0.2, 0]}
           fontSize={0.12}
-          color="#7a8ba3"
+          color="#6B7280"
           anchorX="center"
           anchorY="top"
-          font="/fonts/JetBrainsMono-Regular.woff2"
-          characters="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 "
         >
           {label}
         </Text>
@@ -42,7 +55,7 @@ const SphereNode = ({ position, label }: { position: [number, number, number]; l
   );
 };
 
-const Connections = ({ points }: { points: [number, number, number][] }) => {
+const Connections = ({ points, color }: { points: [number, number, number][]; color: string }) => {
   const linesRef = useRef<THREE.LineSegments>(null!);
 
   const { positions, opacities } = useMemo(() => {
@@ -72,12 +85,12 @@ const Connections = ({ points }: { points: [number, number, number][] }) => {
       <bufferGeometry>
         <bufferAttribute attach="attributes-position" args={[positions, 3]} count={positions.length / 3} />
       </bufferGeometry>
-      <lineBasicMaterial color="#33e6d9" transparent opacity={0.06} />
+      <lineBasicMaterial color={color} transparent opacity={0.06} />
     </lineSegments>
   );
 };
 
-const RotatingGroup = () => {
+const RotatingGroup = ({ color }: { color: string }) => {
   const groupRef = useRef<THREE.Group>(null!);
 
   const points = useMemo<[number, number, number][]>(() => {
@@ -105,31 +118,27 @@ const RotatingGroup = () => {
       {/* Center glow */}
       <mesh>
         <sphereGeometry args={[0.2, 32, 32]} />
-        <meshBasicMaterial color="#33e6d9" transparent opacity={0.3} />
+        <meshBasicMaterial color={color} transparent opacity={0.3} />
       </mesh>
       <mesh>
         <sphereGeometry args={[0.5, 32, 32]} />
-        <meshBasicMaterial color="#33e6d9" transparent opacity={0.05} />
+        <meshBasicMaterial color={color} transparent opacity={0.05} />
       </mesh>
 
-      <Connections points={points} />
+      <Connections points={points} color={color} />
 
       {techLabels.map((label, i) => (
-        <SphereNode key={label} position={points[i]} label={label} />
+        <SphereNode key={label} position={points[i]} label={label} color={color} />
       ))}
     </group>
   );
 };
 
 const TechSphere3D = () => {
+  const primaryColor = usePrimaryColor();
   return (
     <section className="py-24 relative overflow-hidden">
       <div className="container px-6">
-        <div className="text-center mb-4">
-          <span className="font-display text-sm text-primary tracking-widest uppercase">&gt; ecosystem</span>
-          <h2 className="text-2xl md:text-4xl font-display font-bold mt-2">Tech Ecosystem</h2>
-        </div>
-
         <div className="relative h-[400px] md:h-[500px] cursor-grab active:cursor-grabbing">
           <Canvas
             camera={{ position: [0, 0, 7], fov: 50 }}
@@ -138,9 +147,16 @@ const TechSphere3D = () => {
             style={{ background: "transparent" }}
           >
             <ambientLight intensity={0.5} />
-            <RotatingGroup />
+            <RotatingGroup color={primaryColor} />
+            <OrbitControls
+              enableZoom={false}
+              enablePan={false}
+              autoRotate={false}
+              rotateSpeed={0.6}
+            />
           </Canvas>
         </div>
+        <p className="text-center text-xs text-muted-foreground font-display mt-2 opacity-60">drag to explore</p>
       </div>
     </section>
   );
