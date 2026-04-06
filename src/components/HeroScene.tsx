@@ -64,8 +64,8 @@ const NeuralNetwork = () => {
           linePositions[lineIdx * 6 + 4] = positions[j * 3 + 1];
           linePositions[lineIdx * 6 + 5] = positions[j * 3 + 2];
 
-          // Cyan tint
-          const r = 0.2, g = 0.9, b = 0.85;
+          // Blue tint
+          const r = 0.29, g = 0.55, b = 0.96;
           lineColors[lineIdx * 6] = r;
           lineColors[lineIdx * 6 + 1] = g;
           lineColors[lineIdx * 6 + 2] = b * alpha;
@@ -95,7 +95,7 @@ const NeuralNetwork = () => {
             count={NODE_COUNT}
           />
         </bufferGeometry>
-        <pointsMaterial size={0.06} color="#33e6d9" transparent opacity={0.8} sizeAttenuation />
+        <pointsMaterial size={0.06} color="#4B8BF5" transparent opacity={0.8} sizeAttenuation />
       </points>
 
       <lineSegments ref={linesRef}>
