@@ -26,10 +26,10 @@ const Particles = () => {
     const colors = new Float32Array(PARTICLE_COUNT * 3);
     for (let i = 0; i < PARTICLE_COUNT; i++) {
       const t = Math.random();
-      // Cyan to purple gradient
-      colors[i * 3] = 0.2 + t * 0.4;
-      colors[i * 3 + 1] = 0.9 - t * 0.5;
-      colors[i * 3 + 2] = 0.85 + t * 0.15;
+      // Blue to indigo gradient
+      colors[i * 3] = 0.29 + t * 0.2;
+      colors[i * 3 + 1] = 0.55 - t * 0.2;
+      colors[i * 3 + 2] = 0.96;
     }
     return colors;
   }, []);
