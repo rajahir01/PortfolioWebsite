@@ -31,8 +31,31 @@ const Navbar = () => {
       }`}
     >
       <div className="container px-6 flex items-center justify-between h-16">
-        <a href="#" className="font-display text-sm font-bold text-primary">
-          &lt;/&gt;
+        <a href="#" className="flex items-center">
+          <svg width="160" height="64" viewBox="0 0 300 120" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="nav-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style={{stopColor:"#4F46E5",stopOpacity:1}} />
+                <stop offset="100%" style={{stopColor:"#06B6D4",stopOpacity:1}} />
+              </linearGradient>
+            </defs>
+            <g transform="translate(20,20)">
+              <circle cx="40" cy="40" r="35" stroke="url(#nav-grad)" strokeWidth="3" fill="none"/>
+              <line x1="25" y1="40" x2="55" y2="40" stroke="url(#nav-grad)" strokeWidth="2"/>
+              <line x1="40" y1="25" x2="40" y2="55" stroke="url(#nav-grad)" strokeWidth="2"/>
+              <circle cx="25" cy="40" r="3" fill="#06B6D4"/>
+              <circle cx="55" cy="40" r="3" fill="#06B6D4"/>
+              <circle cx="40" cy="25" r="3" fill="#4F46E5"/>
+              <circle cx="40" cy="55" r="3" fill="#4F46E5"/>
+              <circle cx="40" cy="40" r="10" stroke="#4F46E5" strokeWidth="2" fill="none"/>
+            </g>
+            <text x="100" y="55" fontFamily="Arial, sans-serif" fontSize="22" fill="currentColor" fontWeight="600">
+              RAJ AHIRWAR
+            </text>
+            <text x="100" y="80" fontFamily="Arial, sans-serif" fontSize="12" fill="#6B7280">
+              Build • Automate • Scale
+            </text>
+          </svg>
         </a>
         <div className="hidden md:flex items-center gap-8">
           {navLinks.map((link) => (
